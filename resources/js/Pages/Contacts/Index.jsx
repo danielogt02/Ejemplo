@@ -2,8 +2,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link } from '@inertiajs/react'
 import React from 'react'
 
-const Index = ({auth}) => {
-  return (
+const Index = ({auth,contacts}) => {
+  
+    console.log(contacts);
+  
+    return (
     <AuthenticatedLayout 
     user={auth.user}
 

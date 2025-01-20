@@ -15,7 +15,8 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Contacts/Index');
+        $contacts = Contact::where('user_id', Auth::user()->id)->get();
+        return Inertia::render('Contacts/Index',compact('contacts'));
     }
 
     /**
@@ -39,6 +40,8 @@ class ContactController extends Controller
         }
         $data['user_id'] = Auth::user()->id;
         Contact::create($data);
+
+        return to_route('contact.index');
     }
 
     /**
