@@ -32,7 +32,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink>
                                 <NavLink
                                     href={route("contact.index")}
-                                    active={route().current("dashboard")}
+                                    active={route().current("contact.index")}
                                 >
                                     Contactos
                                 </NavLink>
