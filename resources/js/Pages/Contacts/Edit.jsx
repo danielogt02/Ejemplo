@@ -3,23 +3,25 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Transition } from "@headlessui/react";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React from "react";
 
-const Create = ({ auth }) => {
+const Edit = ({ auth, contact }) => {
     const initialValues = {
-        name: "",
+        name: contact.name,
         avatar: "",
-        phone: "",
-        visibility: "",
+        phone: contact.phone,
+        visibility: contact.visibility,
     };
 
-    const { data, setData, errors, post } = useForm(initialValues);
+    const { data, setData, errors, post, recentlySuccessful } =
+        useForm(initialValues);
 
     const submit = (e) => {
         e.preventDefault();
         //console.log(data);
-        post(route("contact.store"));
+        post(route("contact.update", contact));
     };
 
     return (
@@ -29,7 +31,7 @@ const Create = ({ auth }) => {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Crear Contactos
+                        Actualizar Contacto
                     </h2>
 
                     <Link href={route("contact.index")}> Contacto</Link>
@@ -43,6 +45,18 @@ const Create = ({ auth }) => {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <form onSubmit={submit} className="space-y-3">
+                                <Transition
+                                    show={recentlySuccessful}
+                                    enter="transition ease-in-out"
+                                    enterFrom="opacity-0"
+                                    leave="transition ease-in-out"
+                                    leaveTo="opacity-0"
+                                >
+                                    <p className="text-sm text-green-600 text-center">
+                                        Contacto Actualizado.
+                                    </p>
+                                </Transition>
+
                                 <div>
                                     <InputLabel htmlFor="name" value="Nombre" />
 
@@ -50,7 +64,7 @@ const Create = ({ auth }) => {
                                         id="name"
                                         type="text"
                                         name="name"
-                                        value={data.email}
+                                        value={data.name}
                                         className="mt-1 block w-full"
                                         onChange={(e) =>
                                             setData("name", e.target.value)
@@ -73,7 +87,7 @@ const Create = ({ auth }) => {
                                         type="text"
                                         placeholder="+123-456-7890"
                                         name="phone"
-                                        value={data.email}
+                                        value={data.phone}
                                         className="mt-1 block w-full"
                                         onChange={(e) =>
                                             setData("phone", e.target.value)
@@ -115,9 +129,10 @@ const Create = ({ auth }) => {
                                     />
 
                                     <select
-                                        name=""
-                                        id=""
+                                        name="visibility"
+                                        id="visibility"
                                         className="rounded-md w-full border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        defaultValue={data.visibility}
                                         onChange={(e) =>
                                             setData(
                                                 "visibility",
@@ -137,7 +152,7 @@ const Create = ({ auth }) => {
                                 </div>
                                 <div className="flex justify-center">
                                     <PrimaryButton>
-                                        Crear Contacto
+                                        Actualizar Contacto
                                     </PrimaryButton>
                                 </div>
                             </form>
@@ -149,4 +164,4 @@ const Create = ({ auth }) => {
     );
 };
 
-export default Create;
+export default Edit;

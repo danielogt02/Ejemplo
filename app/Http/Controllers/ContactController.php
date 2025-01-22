@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Contac\StoreRequest;
+use App\Http\Requests\Contact\StoreRequest;
+use App\Http\Requests\Contact\UpdateRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ContactController extends Controller
@@ -16,6 +18,7 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::where('user_id', Auth::user()->id)->get();
+        
         return Inertia::render('Contacts/Index',compact('contacts'));
     }
 
@@ -33,12 +36,15 @@ class ContactController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->only('name', 'phone', 'avatar', 'visibility');
+        
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
-            $routeImage = $file->store('avatars', ['disk', 'public']);
+            $routeImage = $file->store('avatars', ['disk' => 'public']);
             $data['avatar'] = $routeImage;
         }
+        
         $data['user_id'] = Auth::user()->id;
+
         Contact::create($data);
 
         return to_route('contact.index');
@@ -57,15 +63,28 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
-        //
+        return Inertia::render('Contacts/Edit',compact('contact'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contact $contact)
+    public function update(UpdateRequest $request, Contact $contact)
     {
-        //
+        $data=$request->only('name','phone','visibility');
+        if($request->hasFile('avatar')){
+            $file=$request->file('avatar');
+            $routeImage=$file->store('avatars',['disk'=>'public']);
+            $data['avatar']=$routeImage;
+        
+            if($contact->avatar){
+                Storage::disk('public')->delete($contact->avatar);
+            }        
+        }
+        $data['user_id']=Auth::user()->id;
+        $contact->update($data);
+
+        return to_route('contact.edit',$contact);
     }
 
     /**
@@ -73,6 +92,10 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        //
+        if($contact->avatar){
+                Storage::disk('public')->delete($contact->avatar);
+            }  
+        $contact->delete();
+        return to_route('contact.index');
     }
 }
