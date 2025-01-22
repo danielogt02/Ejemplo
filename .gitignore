@@ -2,6 +2,7 @@
 /node_modules
 /public/build
 /public/hot
+/public/avatars
 /public/storage
 /storage/*.key
 /storage/pail
@@ -21,3 +22,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+.DS_Store
+Thumbs.db
