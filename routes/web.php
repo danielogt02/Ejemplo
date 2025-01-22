@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Contact;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::get('contacts/{contact}/edit',[ContactController::class,'edit'])->name('contact.edit');
     Route::post('contacts/{contact}',[ContactController::class,'update'])->name('contact.update');
     Route::delete('contacts/{contact}',[ContactController::class,'destroy'])->name('contact.destroy');
+    Route::get('listado',[ContactController::class,'list'])->name('contact.list');
 });
 
 

@@ -20,7 +20,8 @@ const Create = ({ auth }) => {
         e.preventDefault();
         //console.log(data);
         post(route("contact.store"));
-    };
+    }
+
 
     return (
         <AuthenticatedLayout
@@ -118,14 +119,9 @@ const Create = ({ auth }) => {
                                         name=""
                                         id=""
                                         className="rounded-md w-full border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                        onChange={(e) =>
-                                            setData(
-                                                "visibility",
-                                                e.target.value
-                                            )
-                                        }
-                                    >
-                                        <option value=""></option>
+                                        onChange={(e)=> setData('visibility', e.target.value)}
+                                   >
+                                    <option value=""></option>
                                         <option value="public">Publico</option>
                                         <option value="private">Privado</option>
                                     </select>
@@ -134,11 +130,10 @@ const Create = ({ auth }) => {
                                         message={errors.visibility}
                                         className="mt-2"
                                     />
+
                                 </div>
                                 <div className="flex justify-center">
-                                    <PrimaryButton>
-                                        Crear Contacto
-                                    </PrimaryButton>
+                                <PrimaryButton>Crear Contacto</PrimaryButton>
                                 </div>
                             </form>
                         </div>

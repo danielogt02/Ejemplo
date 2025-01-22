@@ -98,4 +98,9 @@ class ContactController extends Controller
         $contact->delete();
         return to_route('contact.index');
     }
+
+    public function list(){
+        $contacts = Contact::where('user_id', Auth::user()->id)->get();
+        return Inertia::render('Contacts/Lista',compact('contacts'));
+    }
 }
